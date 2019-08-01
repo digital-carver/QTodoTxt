@@ -245,13 +245,27 @@ class Task(QtCore.QObject):
                 return False
             return self.priority > other.priority
 
-        # order completed ones by completion date descending
+        # order completed tasks by completion date descending
         if self.completion_date != other.completion_date:
             if not self.completion_date:
                 return False
             if not other.completion_date:
                 return True
             return self.completion_date < other.completion_date
+
+	# order tasks by creation/threshold date descending
+        self_date = self.creation_date
+        other_date = other.creation_date
+        if self.threshold:
+            self_date = self.threshold.date()
+        if other.threshold:
+            other_date = other.threshold.date()
+        if self_date != other_date:
+            if not self_date:
+                return False
+            if not other_date:
+                return True
+            return self_date < other_date
 
         # order the other tasks alphabetically
         return self._text > other.text
