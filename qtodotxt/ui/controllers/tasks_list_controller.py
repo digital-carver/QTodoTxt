@@ -72,7 +72,7 @@ class TasksListController(QtCore.QObject):
 
     def _initEditTaskAction(self):
         action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskEdit.png'), self.tr('&Edit Task'), self)
-        action.setShortcuts(['Ctrl+E', 'Enter'])
+        action.setShortcuts(['e', 'Ctrl+E', 'Enter', 'F2'])
         action.setDisabled(True)
         action.triggered.connect(self.view.editCurrentTask)
         self.view.addAction(action)
@@ -81,7 +81,7 @@ class TasksListController(QtCore.QObject):
     def _initCreateTaskAction(self):
         action = QtWidgets.QAction(
             QtGui.QIcon(self.style + '/resources/TaskCreate.png'), self.tr('&Create new task'), self)
-        action.setShortcuts(['Insert', 'Ctrl+I', 'Ctrl+N'])
+        action.setShortcuts(['i','Insert', 'Ctrl+I', 'Ctrl+N'])
         action.triggered.connect(self.view.createTask)
         self.view.addAction(action)
         self.createTaskAction = action
@@ -90,7 +90,7 @@ class TasksListController(QtCore.QObject):
         action = QtWidgets.QAction(
             QtGui.QIcon(self.style + '/resources/TaskAddOnTem.png'),
             self.tr('&Create a new task based on current task'), self)
-        action.setShortcuts(['Shift+Insert', 'Ctrl+Shift+I'])
+        action.setShortcuts(['Ctrl+i', 'Shift+Insert', 'Ctrl+Shift+I'])
         action.triggered.connect(self.createTaskOnTemplate)
         self.view.addAction(action)
         self.createTaskActionOnTemplate = action
@@ -122,7 +122,7 @@ class TasksListController(QtCore.QObject):
     def _initDecreasePrioritySelectedTasksAction(self):
         action = QtWidgets.QAction(
             QtGui.QIcon(self.style + '/resources/TaskPriorityDecrease.png'), self.tr('Decrease priority'), self)
-        action.setShortcuts(['-', '<'])
+        action.setShortcuts(['-', '<', '#'])
         action.triggered.connect(self._decreasePriority)
         self.view.addAction(action)
         self.decreasePrioritySelectedTasksAction = action
