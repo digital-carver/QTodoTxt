@@ -67,11 +67,13 @@ class FiltersTreeView(QtWidgets.QWidget):
 
     def updateTopLevelTitles(self, counters, show_completed=False):
         nbPending = counters['Pending']
+        nbPendingThisWeek = counters['PendingThisWeek']
         nbDue = counters['Due']
         nbUncategorized = counters['Uncategorized']
         nbContexts = counters['Contexts']
         nbProjects = counters['Projects']
         nbComplete = counters['Complete']
+        nbCompletedThisWeek = counters['CompletedThisWeek']
         nbContCompl = counters['ContCompl']
         nbProjCompl = counters['ProjCompl']
         nbDueCompl = counters['DueCompl']
@@ -82,6 +84,7 @@ class FiltersTreeView(QtWidgets.QWidget):
         self._completeTasksItem.setText(0, "Complete (%d)" % nbComplete)
         if (show_completed is True):
             self._allTasksItem.setText(0, "All ({0}; {1})".format(nbPending, nbComplete))
+            self._weekTasksItem.setText(0, "Week ({0}; {1})".format(nbPendingThisWeek, nbCompletedThisWeek))
             self._dueItem.setText(0, "Due ({0}; {1})".format(nbDue, nbDueCompl))
             self._contextsItem.setText(0, "Contexts ({0}; {1})".format(nbContexts, nbContCompl))
             self._projectsItem.setText(0, "Projects ({0}; {1})".format(nbProjects, nbProjCompl))
@@ -89,6 +92,7 @@ class FiltersTreeView(QtWidgets.QWidget):
             self._uncategorizedTasksItem.setText(0, "Uncategorized ({0}; {1})".format(nbUncategorized, nbUncatCompl))
         else:
             self._allTasksItem.setText(0, "All (%d)" % nbPending)
+            self._weekTasksItem.setText(0, "Week (%d)" % nbPendingThisWeek)
             self._contextsItem.setText(0, "Contexts (%d)" % nbContexts)
             self._projectsItem.setText(0, "Projects (%d)" % nbProjects)
             self._dueItem.setText(0, "Due (%d)" % nbDue)
@@ -149,6 +153,9 @@ class FiltersTreeView(QtWidgets.QWidget):
         self._allTasksItem = FilterTreeWidgetItem(None, ['All'],
                                                   AllTasksFilter(),
                                                   QtGui.QIcon(self.style + '/resources/FilterAll.png'))
+        self._weekTasksItem = FilterTreeWidgetItem(None, ['Week'],
+                                                  AllTasksFilter(),
+                                                  QtGui.QIcon(self.style + '/resources/FilterAll.png'))
         self._dueItem = FilterTreeWidgetItem(None, ['Due'],
                                              HasDueDateFilter(), QtGui.QIcon(self.style + '/resources/FilterDue.png'))
         self._uncategorizedTasksItem = FilterTreeWidgetItem(
@@ -167,8 +174,8 @@ class FiltersTreeView(QtWidgets.QWidget):
                                                        CompleteTasksFilter(),
                                                        QtGui.QIcon(self.style + '/resources/FilterComplete.png'))
         tree.addTopLevelItems([
-            self._allTasksItem, self._uncategorizedTasksItem, self._dueItem, self._contextsItem, self._projectsItem,
-            self._priorityItem, self._completeTasksItem
+            self._allTasksItem, self._weekTasksItem, self._uncategorizedTasksItem, self._dueItem,
+            self._contextsItem, self._projectsItem, self._priorityItem, self._completeTasksItem
         ])
 
     def _initFilterTypeMappings(self):

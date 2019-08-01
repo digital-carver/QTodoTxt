@@ -6,6 +6,7 @@ from qtodotxt.lib.filters import DueTodayFilter, DueTomorrowFilter, DueThisWeekF
 from qtodotxt.lib.tasklib import Task
 from sys import version
 import time
+from datetime import datetime, timedelta
 
 logger = logging.getLogger(__name__)
 
@@ -189,10 +190,12 @@ class File(object):
 
     def getTasksCounters(self):
         counters = dict({'Pending': 0,
+                         'PendingThisWeek': 0,
                          'Uncategorized': 0,
                          'Contexts': 0,
                          'Projects': 0,
                          'Complete': 0,
+                         'CompletedThisWeek': 0,
                          'Priority': 0,
                          'DueCompl': 0,
                          'ProjCompl': 0,
@@ -200,11 +203,17 @@ class File(object):
                          'UncatCompl': 0,
                          'PrioCompl': 0,
                          'Due': 0})
+        today = datetime.today().date()
+        start_of_week = today - timedelta(days=today.weekday())
+        end_of_week = start_of_week + timedelta(days=6)
         for task in self.tasks:
             nbProjects = len(task.projects)
             nbContexts = len(task.contexts)
             if not task.is_complete:
                 counters['Pending'] += 1
+                if not task.threshold or task.threshold.date() <= end_of_week: # Need to be Refactored
+                    if task.priority >= 'D':
+                        counters['PendingThisWeek'] += 1
                 if nbProjects > 0:
                     counters['Projects'] += 1
                 if nbContexts > 0:
@@ -217,6 +226,8 @@ class File(object):
                     counters['Priority'] += 1
             else:
                 counters['Complete'] += 1
+                if task.completion_date >= start_of_week:
+                    counters['CompletedThisWeek'] += 1
                 if nbProjects > 0:
                     counters['ProjCompl'] += 1
                 if nbContexts > 0:
