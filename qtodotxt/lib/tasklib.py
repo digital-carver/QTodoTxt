@@ -244,6 +244,15 @@ class Task(QtCore.QObject):
             if not other.priority:
                 return False
             return self.priority > other.priority
+
+        # order completed ones by completion date descending
+        if self.completion_date != other.completion_date:
+            if not self.completion_date:
+                return False
+            if not other.completion_date:
+                return True
+            return self.completion_date < other.completion_date
+
         # order the other tasks alphabetically
         return self._text > other.text
 
