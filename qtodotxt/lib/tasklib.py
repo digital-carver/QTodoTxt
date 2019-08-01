@@ -181,6 +181,7 @@ class Task(QtCore.QObject):
             return
         self.completion_date = date.today()
         date_string = self.completion_date.strftime('%Y-%m-%d')
+        self._removePriority()
         self._text = 'x %s %s' % (date_string, self._text)
         self.is_complete = True
         self.modified.emit(self)
@@ -219,13 +220,19 @@ class Task(QtCore.QObject):
             self._text = "({}) {}".format(self.priority, self._text[4:])
         self.modified.emit(self)
 
+    def _removePriority(self):
+        if self.is_complete:
+            return
+        if self.priority:
+            self.priority = ""
+            self._text = self._text[4:]
+            self._text = self._text.replace("({})".format(self.priority), "", 1)
+
     def decreasePriority(self):
         if self.is_complete:
             return
         if self.priority >= self._lowest_priority:
-            self.priority = ""
-            self._text = self._text[4:]
-            self._text = self._text.replace("({})".format(self.priority), "", 1)
+            self._removePriority()
         elif self.priority:
             oldpriority = self.priority
             self.priority = chr(ord(self.priority) + 1)
