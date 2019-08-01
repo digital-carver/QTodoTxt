@@ -14,7 +14,7 @@ class TaskHtmlizer(object):
             self.errorColor = "red"
             self.linkColor = "#E0A180"
         else:  # for light theme
-            self.priority_colors = dict(A='red', B='green', C='navy')
+            self.priority_colors = dict(A='red', B='orange', C='green', D='royalblue')
             self.contextColor = "green"
             self.projectColor = "#64AAD0"
             self.priorityDuecolors = ['red', 'orange']
