@@ -114,7 +114,7 @@ class TasksListController(QtCore.QObject):
     def _initCompleteSelectedTasksAction(self):
         action = QtWidgets.QAction(
             QtGui.QIcon(self.style + '/resources/TaskComplete.png'), self.tr('C&omplete selected tasks'), self)
-        action.setShortcuts(['x', 'c'])
+        action.setShortcuts(['x'])
         action.triggered.connect(self._completeSelectedTasks)
         self.view.addAction(action)
         self.completeSelectedTasksAction = action
